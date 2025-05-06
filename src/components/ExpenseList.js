@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-export default function ExpenseList({ expense }) {
+import useLocalStorage from "../Hooks/useLocalStorage";
+import { useContext } from "react";
+import {expenseContext} from "../context/ExpenseContext";
+export default function ExpenseList({deleteExpense,editExpense }) {
   const emojiMap = {
     food: "🍽️",
     salary: "💼",
@@ -14,13 +17,57 @@ export default function ExpenseList({ expense }) {
     entertainment: "🎮",
     other: "📁",
   };
+  const { state } = useContext(expenseContext);
+  const { expense } = state;
+  const [expenseList, setExpenseList] = useState([]);
+  const [storedExpense, setStoredExpense] = useLocalStorage("expenses", []);
+  useEffect(() => {
+    if (storedExpense) {
+      setExpenseList(storedExpense);
+    }
+  }, [storedExpense]);
+  useEffect(() => {
+    if (Array.isArray(expense)) {
+      setExpenseList(expense);
+    }
+  }, [expense]);
+  function handleEditItem(item) {
+    // Logic to handle editing the item
+    editExpense(item);
+    
+
+  }
+  function handleDeleteItem(item) {
+    // Logic to handle deleting the item
+    setExpenseList(expenseList.filter((expense) => expense !== item));
+    setStoredExpense(
+      expenseList.filter((expense) => expense !== item)
+    );
+    deleteExpense(
+      item
+    );
+  }
   return (
     <div className="space-y-4">
-      {expense.map((item, index) => (
+      {expenseList.map((item, index) => (
         <div
           key={index}
-          className="bg-white p-4 rounded-xl shadow flex items-center justify-between"
+          className="relative bg-white p-4 rounded-xl shadow flex items-center justify-between"
         >
+          <div className="absolute top-2 right-2 flex gap-2">
+            <button
+              className="text-blue-500 hover:text-blue-700"
+              onClick={() => handleEditItem(item)}
+            >
+              ✏️
+            </button>
+            <button
+              className="text-red-500 hover:text-red-700"
+              onClick={() => handleDeleteItem(item)}
+            >
+              🗑️
+            </button>
+          </div>
           <div className="flex items-start gap-4">
             <div className="bg-green-100 text-green-600 rounded-full p-3">
               {emojiMap[item.category] || "📁"}

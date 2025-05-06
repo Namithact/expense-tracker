@@ -1,8 +1,12 @@
 import React from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { expenseContext } from "../context/ExpenseContext";
 
-function Header({ balance }) {
+function Header() {
+  const { state } = useContext(expenseContext);
+  const { totalBalance } = state;
   const navigate = useNavigate();
   return (
     <header className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-md transition-all duration-500">
@@ -20,7 +24,7 @@ function Header({ balance }) {
         <div className="flex items-center space-x-4 md:space-x-6">
           {/* Total Balance (hide on small screens) */}
           <div className=" text-white text-sm md:text-lg font-semibold hover:text-gray-200 transition-colors duration-300">
-            Balance: ${balance}
+            Balance: ${totalBalance}
           </div>
 
           {/* Profile Icon */}

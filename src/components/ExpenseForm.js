@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-
-export default function ExpenseForm({ expenseData }) {
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("");
-  const [date, setDate] = useState("");
-  const [amountType, setAmountType] = useState("");
+export default function ExpenseForm({
+  expenseData,
+  heading,
+  button,
+  initialData,
+}) {
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [amount, setAmount] = useState(initialData?.amount || "");
+  const [category, setCategory] = useState(initialData?.category || "");
+  const [date, setDate] = useState(initialData?.date || "");
+  const [amountType, setAmountType] = useState(initialData?.amountype || "");
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -27,7 +31,7 @@ export default function ExpenseForm({ expenseData }) {
       className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mx-auto mt-8 space-y-6"
     >
       <h2 className="text-3xl font-bold text-indigo-600 text-center">
-        Add Expense
+        {heading}
       </h2>
 
       <div className="flex flex-col space-y-2">
@@ -109,7 +113,7 @@ export default function ExpenseForm({ expenseData }) {
         type="submit"
         className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 rounded-lg transition-all duration-300"
       >
-        Add Expense
+        {button}
       </button>
     </form>
   );

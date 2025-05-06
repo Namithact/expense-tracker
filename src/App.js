@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Suspense,lazy } from "react";
 import Footer from "./components/Footer";
+import ExpenseContext from "./context/ExpenseContext";
 function App() {
   const HomePage =lazy(()=> import("./Pages/HomePage"));
   const AddExpensePage=lazy(()=> import("./Pages/AddExpensePage"));
@@ -11,6 +12,7 @@ function App() {
       {/* Tailwind CSS Spinner */}
       <div className="border-4 border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
     </div>}>
+    <ExpenseContext>
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -19,6 +21,7 @@ function App() {
       </Routes>
       <Footer />
     </Router>
+    </ExpenseContext>
     </Suspense>
   );
 }
