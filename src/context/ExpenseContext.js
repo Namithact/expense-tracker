@@ -81,8 +81,22 @@ export default function ExpenseContext({ children }) {
     storedBalance,
     storedExpenses,
   ]);
+  const categoryData = storedExpenses.reduce((acc, expense) => {
+    const amount = Number(expense.amount); // ✅ Convert string to number
+    if(expense.amountype === "income") {
+      return acc; // Skip income expenses
+    }
+    const existing = acc.find(item => item.name === expense.category);
+    if (existing) {
+      existing.value += amount;
+    } else {
+      acc.push({ name: expense.category, value: amount });
+    }
+    return acc;
+  }, []);
+  console.log(categoryData);
   return (
-    <expenseContext.Provider value={{ state, dispatch }}>
+    <expenseContext.Provider value={{ state, dispatch,categoryData }}>
       {children}
     </expenseContext.Provider>
   );
